@@ -23,13 +23,6 @@ function Header() {
             Home
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 group-hover:w-full transition-all duration-200"></span>
           </Link>
-          <Link 
-            to="/dashboard" 
-            className="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 relative group"
-          >
-            Dashboard
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-teal-600 group-hover:w-full transition-all duration-200"></span>
-          </Link>
         </nav>
       </div>
     </header>

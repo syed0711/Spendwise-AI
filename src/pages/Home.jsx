@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import FileUploader from "../components/FileUploader";
-import { useNavigate } from "react-router-dom";
 import ChartPanel from "../components/ChartPanel";
 import TrendChart from "../components/TrendChart";
 
 function Home() {
-  const navigate = useNavigate();
   const [processing, setProcessing] = useState(false);
 
   const handleProcess = () => {
@@ -14,7 +12,6 @@ function Home() {
     setProcessing(true);
     setTimeout(() => {
       setProcessing(false);
-      navigate("/dashboard");
     }, 2000);
   };
 
