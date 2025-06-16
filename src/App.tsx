@@ -1,3 +1,7 @@
+import { db } from "./firebase";
+console.log("Firestore instance:", db);
+
+
 export default function App() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
