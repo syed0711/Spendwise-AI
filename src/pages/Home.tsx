@@ -8,6 +8,7 @@ export interface HomeProps {
 export default function Home({ onParsed }: HomeProps) {
   const navigate = useNavigate()
 
+  // After parsing, save transactions then redirect
   const handleParsed = (txns: any[]) => {
     onParsed(txns)
     navigate('/dashboard')
