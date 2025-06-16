@@ -1,42 +1,37 @@
-import { useState, ChangeEvent } from 'react'
-import { parseFinancials } from '../api/parse'
+import { useState } from 'react'
 
-interface FileUploaderProps {
-  onParsed: (transactions: any[]) => void
+export interface FileUploaderProps {
+  onParsed: (txns: any[]) => void
 }
 
 export default function FileUploader({ onParsed }: FileUploaderProps) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [file, setFile] = useState<File | null>(null)
 
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(e.target.files?.[0] ?? null)
+  }
 
-    setError(null)
-    setLoading(true)
-
-    try {
-      const text = await file.text()
-      const transactions = await parseFinancials(text, 'csv')
-      onParsed(transactions)
-    } catch (err: any) {
-      setError(err?.message || 'Failed to parse file')
-    } finally {
-      setLoading(false)
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Placeholder: in future, upload and parse file then invoke onParsed
+    onParsed([])
   }
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
       <input
         type="file"
-        accept=".csv"
+        accept=".csv,text/csv"
         onChange={handleChange}
-        className="file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white file:hover:bg-blue-700"
+        className="border p-2 rounded w-full"
       />
-      {loading && <p className="text-gray-500">Parsing...</p>}
-      {error && <p className="text-red-600">{error}</p>}
-    </div>
+      <button
+        type="submit"
+        disabled={!file}
+        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+      >
+        Upload
+      </button>
+    </form>
   )
 }
