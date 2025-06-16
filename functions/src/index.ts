@@ -1,19 +1,26 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-import {onRequest} from "firebase-functions/v2/https";
+import { onRequest } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
+import { parse as parseCsv } from "csv-parse/sync";
 
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
+export const parseFinancials = onRequest((req, res) => {
+  try {
+    const { data, format } = req.body as { data?: string; format?: "csv" | "json" };
+    if (typeof data !== "string" || (format !== "csv" && format !== "json")) {
+      res.status(400).json({ success: false, error: "Invalid request" });
+      return;
+    }
 
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+    let transactions: any[];
+
+    if (format === "csv") {
+      transactions = parseCsv(data, { columns: true, skip_empty_lines: true });
+    } else {
+      transactions = JSON.parse(data);
+    }
+
+    res.json({ success: true, transactions });
+  } catch (err) {
+    logger.error("parseFinancials failed", err);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
