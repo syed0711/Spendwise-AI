@@ -13,6 +13,7 @@ export default function Home({ onParsed }: HomeProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+<<<<<<< codex/update-home.tsx-to-use-firebase-function-for-csv-parsing
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (!file) return
@@ -30,6 +31,12 @@ export default function Home({ onParsed }: HomeProps) {
     } finally {
       setLoading(false)
     }
+=======
+  // After parsing, save transactions then redirect
+  const handleParsed = (txns: any[]) => {
+    onParsed(txns)
+    navigate('/dashboard')
+>>>>>>> main
   }
 
   return (
