@@ -1,13 +1,32 @@
+import { useState } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { db } from "./firebase";
+import Home from "./pages/Home";
+import { Dashboard } from "./pages/Dashboard";
+
 console.log("Firestore instance:", db);
 
-
 export default function App() {
+  const [transactions, setTransactions] = useState<any[] | null>(null);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold text-blue-600 underline">
-        🎉 Spendwise Starter OK!
-      </h1>
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home onParsed={setTransactions} />}
+        />
+        <Route
+          path="/dashboard"
+          element={<Dashboard transactions={transactions} />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
